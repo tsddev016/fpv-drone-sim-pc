@@ -1,0 +1,45 @@
+{
+  "name": "fpv-drone-sim-pc",
+  "version": "1.0.0",
+  "description": "FPV Drone Sim — desktop (Electron)",
+  "main": "main.js",
+  "author": "tsddev016",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux",
+    "dist:mac": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.tsddev016.fpvdronesim",
+    "productName": "FPV Drone Sim",
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "www/**/*", "package.json"],
+    "win": {
+      "target": ["nsis", "portable"],
+      "artifactName": "FPV-Drone-Sim-${version}-${os}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "FPV Drone Sim"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Game"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "category": "public.app-category.games"
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  }
+}
