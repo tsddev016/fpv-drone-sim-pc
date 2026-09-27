@@ -1,7 +1,12 @@
 const { app, BrowserWindow, Menu, shell } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 let mainWindow = null;
+
+// Preferência: www/index.html local; senão site online
+const LOCAL_INDEX = path.join(__dirname, 'www', 'index.html');
+const ONLINE_URL = 'https://fpvdronesimecru.vercel.app/';
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -26,7 +31,11 @@ function createWindow() {
     mainWindow.focus();
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'www', 'index.html'));
+  if (fs.existsSync(LOCAL_INDEX)) {
+    mainWindow.loadFile(LOCAL_INDEX);
+  } else {
+    mainWindow.loadURL(ONLINE_URL);
+  }
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
@@ -39,6 +48,18 @@ function createWindow() {
     {
       label: 'Arquivo',
       submenu: [
+        {
+          label: 'Jogar offline (local)',
+          click: () => {
+            if (fs.existsSync(LOCAL_INDEX)) mainWindow.loadFile(LOCAL_INDEX);
+            else shell.openExternal(ONLINE_URL);
+          },
+        },
+        {
+          label: 'Jogar online (Vercel)',
+          click: () => mainWindow.loadURL(ONLINE_URL),
+        },
+        { type: 'separator' },
         { role: 'reload', label: 'Recarregar' },
         { role: 'toggleDevTools', label: 'DevTools' },
         { type: 'separator' },
@@ -56,12 +77,16 @@ function createWindow() {
       label: 'Ajuda',
       submenu: [
         {
-          label: 'Jogo online (web)',
-          click: () => shell.openExternal('https://fpvdronesimecru.vercel.app/'),
+          label: 'Site do jogo',
+          click: () => shell.openExternal(ONLINE_URL),
         },
         {
-          label: 'GitHub',
+          label: 'GitHub (PC)',
           click: () => shell.openExternal('https://github.com/tsddev016/fpv-drone-sim-pc'),
+        },
+        {
+          label: 'GitHub (Web)',
+          click: () => shell.openExternal('https://github.com/tsddev016/fpv-drone-sim'),
         },
       ],
     },

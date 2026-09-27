@@ -1,40 +1,55 @@
-# FPV Drone Sim — PC (Desktop)
+# FPV Drone Sim — PC
 
-Versão **desktop** do [FPV Drone Sim](https://github.com/tsddev016/fpv-drone-sim) para **Windows**, **macOS** e **Linux**, usando **Electron**.
+Versão **desktop** do simulador FPV para Windows, macOS e Linux.
 
-Jogo online: https://fpvdronesimecru.vercel.app/
+**Repositório:** https://github.com/tsddev016/fpv-drone-sim-pc  
+**Jogo web:** https://fpvdronesimecru.vercel.app/  
+**Código web:** https://github.com/tsddev016/fpv-drone-sim
 
 ---
 
-## Como jogar no PC
+## Como jogar (mais fácil)
 
-### Opção A — Mais fácil (sem Electron)
+### 1. App Electron (recomendado)
 
-**Windows:** dê dois cliques em `JOGAR.bat` (precisa de Python instalado).
-
-Ou no terminal:
+Precisa do [Node.js](https://nodejs.org/) instalado.
 
 ```bash
-cd www
-python -m http.server 8080
-# abra http://localhost:8080 no Chrome
-```
-
-### Opção B — App com janela própria (Electron)
-
-```bash
+git clone https://github.com/tsddev016/fpv-drone-sim-pc.git
+cd fpv-drone-sim-pc
 npm install
 npm start
 ```
 
-### Opção C — Gerar instalador (.exe)
+Abre uma **janela de aplicativo**.  
+Se a pasta `www/` tiver o jogo, joga offline; senão, abre a versão **online** automaticamente.
+
+No menu **Arquivo** você pode alternar:
+- Jogar offline (local)
+- Jogar online (Vercel)
+
+### 2. Gerar instalador Windows (.exe)
 
 ```bash
 npm install
 npm run dist:win
 ```
 
-O instalador fica na pasta `dist/` e cria atalho na área de trabalho.
+O instalador sai em `dist/`. Instala atalho na área de trabalho.
+
+### 3. Só o navegador (sem Electron)
+
+Baixe o repo web e sirva a pasta:
+
+```bash
+git clone https://github.com/tsddev016/fpv-drone-sim.git
+cd fpv-drone-sim
+python -m http.server 8080
+```
+
+Abra http://localhost:8080
+
+Ou no Windows use o `JOGAR.bat` se a pasta `www/` estiver completa.
 
 ---
 
@@ -49,7 +64,7 @@ O instalador fica na pasta `dist/` e cria atalho na área de trabalho.
 | Turbo | E | L2 |
 | Reset | R | — |
 | Câmera | C | — |
-| Modo | M | — |
+| Modo Acro/Angle | M | — |
 
 ---
 
@@ -57,12 +72,36 @@ O instalador fica na pasta `dist/` e cria atalho na área de trabalho.
 
 ```text
 fpv-drone-sim-pc/
-├── main.js / preload.js / package.json
-├── JOGAR.bat / JOGAR.sh
-└── www/          ← o jogo completo
+├── main.js          # Janela Electron
+├── preload.js
+├── package.json     # npm start / dist:win
+├── JOGAR.bat        # Atalho Windows (servidor local)
+├── JOGAR.sh
+├── www/             # Cópia do jogo (quando presente)
+└── README.md
 ```
 
-## Relacionado
+Para sincronizar o jogo offline com a versão web mais nova:
 
-- Web: https://github.com/tsddev016/fpv-drone-sim
-- PC: https://github.com/tsddev016/fpv-drone-sim-pc
+```bash
+# na pasta do repo PC
+rm -rf www
+git clone --depth 1 https://github.com/tsddev016/fpv-drone-sim.git _web
+mkdir -p www
+cp _web/*.js _web/index.html _web/manifest.json www/ 2>/dev/null
+rm -rf _web
+```
+
+---
+
+## Requisitos
+
+| Modo | Precisa |
+|------|---------|
+| `npm start` | Node.js 18+ |
+| Instalador | Node.js + `npm run dist:win` |
+| Só browser | Python ou Node |
+
+---
+
+Feito para **tsddev016**.
