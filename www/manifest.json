@@ -1,0 +1,8 @@
+{
+  "name": "FPV Drone Sim",
+  "short_name": "FPV",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0a120e",
+  "theme_color": "#0a120e"
+}
